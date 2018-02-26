@@ -1,0 +1,31 @@
+<div class="uk-margin">
+  <ul class="uk-breadcrumb">
+    <li><a href="/dashboard">Группы</a></li>
+    <li><a href="/groups/{{ .wallet.GroupID }}"> {{ .group.Name }} </a></li>
+    <li><a href="/wallets/{{ .wallet.ID }}"> {{ .wallet }} </a></li>
+    <li><span> Настройки </span></li>
+  </ul>
+</div>
+<div class="uk-margin">
+  <form action="" class="uk-form" method="post">
+    <div class="uk-margin">
+      <label for="name">Имя</label>
+      <input class="uk-input" type="text" name="name" id="name" placeholder="Имя кошелька" value="{{ .wallet.Name }}">
+    </div>
+    <div class="uk-margin">
+      <label for="token">Токен</label>
+      <input class="uk-input" type="text" name="token" id="token" placeholder="Токен доступа" value="{{ .wallet.Token }}">
+    </div>
+    <div class="uk-margin">
+      <label for="expiry">Срок действия токена (фомат: "дд.мм.гггг")</label>
+      <input class="uk-input" type="text" name="expiry" id="expiry" placeholder="20.12.2019" value="{{ .wallet.TokenExpiry.Format "02.01.2006" }}">
+    </div>
+    <div class="uk-margin">
+      <label for="limit">Лимит</label>
+      <input class="uk-input" type="text" name="limit" id="limit" placeholder="Месячный лимит" value="{{ .wallet.Limit }}">
+    </div>
+    <div class="uk-margin">
+      <button class="uk-button uk-button-primary">Сохранить</button> <a class="uk-button uk-button-danger uk-float-right" href="/wallets/{{ .wallet.ID }}/delete">Удалить кошелёк</a>
+    </div>
+  </form>
+</div>

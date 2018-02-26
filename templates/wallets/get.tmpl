@@ -1,0 +1,89 @@
+<div class="uk-margin">
+  <div class="uk-flex">
+    <div class="uk-width-1-2">
+      <ul class="uk-breadcrumb">
+        <li><a href="/dashboard">Группы</a></li>
+        <li><a href="/groups/{{ .wallet.GroupID }}"> {{ .group.Name }} </a></li>
+        <li><span> {{ .wallet.Name }} </span></li>
+      </ul>
+    </div>
+    <div class="uk-width-1-2">
+      <a href="/wallets/{{ .wallet.ID }}/setting" class="uk-button uk-button-primary uk-align-right">Настройки</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="uk-grid">
+  <div class="uk-width-2-5@m">
+    <h4>Кошелёк {{ .wallet.Name }}</h4>
+    <table class="uk-table">
+      <tr>
+        <td>Баланс:</td>
+        <td>{{ .wallet.Balance }}</td>
+      </tr>
+      <tr>
+        <td>Заблокирован:</td>
+        <td>{{ if .wallet.Blocked }} <span class="uk-text-danger">Да</span> {{ else }} <span class="uk-text-success">Нет</span> {{ end }}</td>
+      </tr>
+      <tr>
+        <td>Пополнений:</td>
+        <td>{{ .wallet.TotalMonthIncoming }}</td>
+      </tr>
+      <tr>
+        <td>Снятий:</td>
+        <td>{{ .wallet.TotalMonthOutgoing }}</td>
+      </tr>
+      <tr>
+        <td>Транзакций сегодня:</td>
+        <td>{{ .wallet.WalletCounters.TodayTxnCount }}</td>
+      </tr>
+    </table>
+    <h4>Перевести</h4>
+    <form action="/transfer" method="post" class="uk-form">
+      <input type="hidden" name="wallet_id" value="{{ .wallet.ID }}" id="">
+      <div class="uk-margin">
+        <label for="to"></label>
+        <input type="text" placeholder="Кошелёк или карта" class="uk-input" name="to" id="to">
+      </div>
+      <div class="uk-margin">
+        <input type="text" class="uk-input" name="amount" id="" placeholder="Сумма">
+      </div>
+      <div class="uk-margin">
+        <input type="text" class="uk-input" name="comment" id="" placeholder="Комментарий (только при переводе на qiwi)">
+      </div>
+      <div class="uk-margin">
+        <label for="show_fee">Показать точную комиссию перед платежом</label>
+        <input type="checkbox" class="uk-checkbox" name="show_fee" id="show_fee" value="true">
+      </div>
+      <div class="uk-margin">
+        <button class="uk-button uk-button-primary">Перевести</button>
+      </div>
+    </form>
+    <h4>Вывести всё в bitcoin</h4>
+    <form action="/exchange/wallets/{{ .wallet.ID }}" method="post">
+      <button class="uk-button uk-button-primary">Вывести</button>
+    </form>
+  </div>
+  <div class="uk-width-expand@m">
+    <table class="uk-table uk-table-divider uk-table-striped">
+        <caption>Последние транзакции:</caption>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Статус</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .transactions}}<tr>
+                <td>{{ .QiwiTxnID }} </td>
+                <td>{{ if eq  .Status 3}}<span class="uk-text-danger">Ошибка</span>{{else}}<span class="uk-text-success">Завершена</span>{{end}}</td>
+                <td class="uk-text-{{ if eq .TxnType 1 }}success{{else}}danger{{end}}">{{ if eq .TxnType 1 }}+{{else}}-{{end}}{{ .Amount }}</td>
+                <td>{{ .QiwiCreatedAt.Format "02.01.2006 15:04"}}</td>
+            </tr>{{ end }}
+        </tbody>
+    </table>
+  </div>
+</div>

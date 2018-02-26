@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{{ .Title }}</title>
+  <link rel="stylesheet" href="/css/uikit.min.css">
+</head>
+<body>
+  <div class="uk-container">
+    <nav class="uk-navbar uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+          <li><a href="/dashboard">Кошельки</a></li>
+          <!--<li class="uk-active"><a href="/transfer">Перевести</a></li>
+          <li class="uk-active"><a href="/check">Проверить токен</a></li>-->
+          <li><a href="/exchange">Биржа</a></li>
+          <li><a href="/setting">Настройки</a></li>
+        </ul>
+      </div>
+        <div class="uk-navbar-right">
+          <ul class="uk-navbar-nav">
+              <li>
+                  <a href="/logout">Выйти</a>
+              </li>
+          </ul>
+      </div>
+    </nav>
+    {{ with .Flash.ErrorMsg }}
+    <div class="uk-container">
+      <div class="uk-alert uk-alert-danger">
+        {{ . }}
+        </div>
+      </div>{{ end }}
+      {{ with .Flash.SuccessMsg }}
+      <div class="container">
+        <div class="uk-alert uk-alert-success">
+          {{ . }}
+          </div>
+        </div>{{ end }}
+  {{ yield }}
+
+    <div class="uk-margin">
+      <hr class="uk-divider-icon">
+      <div class="uk-float-right">Версия: {{ .AppVer }} | Страница: <b>{{ LoadTimes .startTime }}</b></div>
+    </div>
+    </div>
+
+
+  <!-- <script src="/js/bundle.js"></script> -->
+</body>
+</html>
